@@ -24,7 +24,7 @@ CREATE TABLE applications (
     id             INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id        INTEGER NOT NULL,
     service_id     INTEGER NOT NULL,
-    receive_date   TEXT    NOT NULL,          -- ДД.ММ.ГГГГ
+    receive_date   TEXT    NOT NULL,
     payment        TEXT    NOT NULL
                    CHECK (payment IN ('Наличные', 'Перевод')),
     status         TEXT    NOT NULL DEFAULT 'Новая'
@@ -36,6 +36,6 @@ CREATE TABLE applications (
 );
 
 INSERT INTO services (name) VALUES
-    ('Выписка об основных характеристиках объекта'),
-    ('Выписка о переходе прав'),
-    ('Выписка о кадастровой стоимости');
+    ('Выписка об основных характеристиках и правах'),
+    ('Выписка о кадастровой стоимости'),
+    ('Выписка о переходе прав на объект');

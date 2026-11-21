@@ -1,0 +1,60 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  background: #f5f5f5;
+  color: #222;
+  font-size: 14px;
+  line-height: 1.5;
+  width: 390px;
+  margin: 0 auto;
+  min-height: 844px;
+}
+.header {
+  background: #0b5aa2;
+  color: #fff;
+  padding: 10px 14px;
+  font-weight: bold;
+  font-size: 16px;
+}
+.container { padding: 14px; }
+h1 { font-size: 18px; color: #0b5aa2; margin: 0 0 12px; }
+label { display: block; margin-bottom: 10px; font-size: 13px; color: #555; }
+input, select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+.btn {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  background: #0b5aa2;
+  color: #fff;
+  border: 0;
+  border-radius: 4px;
+  font-size: 15px;
+  text-align: center;
+  text-decoration: none;
+  box-sizing: border-box;
+}
+.card {
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+.card .status {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: bold;
+}
+.status-new { background: #dbe7f5; color: #0b5aa2; }
+.status-work { background: #ffe7cc; color: #a35400; }
+.status-done { background: #d9f0e2; color: #1e6b3f; }
+.link { display: block; text-align: center; margin-top: 12px; color: #0b5aa2; }

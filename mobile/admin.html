@@ -1,42 +1,24 @@
 <!DOCTYPE html>
 <html lang="ru">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=390" />
-  <title>Мобильный макет 390×844 — админ</title>
-  <link rel="stylesheet" href="../static/css/style.css" />
-  <style>
-    body { background: #cfd8e0; }
-    .mobile-nav { display: flex; gap: 8px; margin-bottom: 12px; font-size: .85rem; flex-wrap: wrap; }
-    .data-table { font-size: .78rem; }
-  </style>
-</head>
+<head><meta charset="UTF-8"><meta name="viewport" content="width=390, initial-scale=1">
+<title>Админ</title><link rel="stylesheet" href="style.css"></head>
 <body>
-  <div class="mobile-frame">
-    <div class="mobile-nav">
-      <a href="login.html">Вход</a>
-      <a href="register.html">Регистрация</a>
-      <a href="applications.html">Заявки</a>
-      <a href="new_application.html">Новая</a>
-      <a href="admin.html">Админ</a>
-    </div>
-    <h1>Админ-панель</h1>
-    <label>Фильтр
-      <select>
-        <option>Все</option>
-        <option>Новая</option>
-        <option>В обработке</option>
-        <option>Услуга оказана</option>
-      </select>
-    </label>
-    <div class="table-wrap">
-      <table class="data-table">
-        <thead><tr><th>#</th><th>Услуга</th><th>Статус</th></tr></thead>
-        <tbody>
-          <tr><td>1</td><td>Кадастровая стоимость</td><td>Новая</td></tr>
-        </tbody>
-      </table>
-    </div>
+<div class="header">гражданам.егрн · Админ</div>
+<div class="container">
+  <h1>Все заявки</h1>
+  <label>Фильтр по статусу
+    <select><option>Все</option><option>Новая</option><option>В обработке</option><option>Услуга оказана</option></select>
+  </label>
+  <div class="card">
+    <b>№1 · user123</b><br>
+    Выписка об основных характеристиках<br>
+    <span class="status status-done">Услуга оказана</span>
   </div>
-</body>
-</html>
+  <div class="card">
+    <b>№2 · user123</b><br>
+    Выписка о кадастровой стоимости<br>
+    <span class="status status-work">В обработке</span>
+  </div>
+  <a class="link" href="#">1 · 2 · 3</a>
+</div>
+</body></html>

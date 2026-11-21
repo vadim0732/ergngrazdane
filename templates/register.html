@@ -3,22 +3,29 @@
 {% block content %}
 <form method="post" class="form">
   <h1>Регистрация</h1>
-  <label>Логин
-    <input name="login" required minlength="3" value="{{ form.login or '' }}">
+  <label>Логин (латиница и цифры, ≥ 6)
+    <input name="login" required minlength="6"
+           pattern="[A-Za-z0-9]{6,}"
+           value="{{ form.login or '' }}">
   </label>
-  <label>Пароль
-    <input type="password" name="password" required minlength="6">
+  <label>Пароль (минимум 8 символов)
+    <input type="password" name="password" required minlength="8">
   </label>
-  <label>ФИО
-    <input name="full_name" required value="{{ form.full_name or '' }}">
+  <label>ФИО (кириллица и пробелы)
+    <input name="full_name" required
+           pattern="[А-Яа-яЁё\s]+"
+           value="{{ form.full_name or '' }}">
   </label>
-  <label>Телефон
-    <input name="phone" required value="{{ form.phone or '' }}">
+  <label>Телефон (8(XXX)XXX-XX-XX)
+    <input name="phone" required
+           placeholder="8(999)123-45-67"
+           pattern="8\(\d{3}\)\d{3}-\d{2}-\d{2}"
+           value="{{ form.phone or '' }}">
   </label>
   <label>E-mail
     <input type="email" name="email" required value="{{ form.email or '' }}">
   </label>
-  <button class="btn" type="submit">Зарегистрироваться</button>
+  <button class="btn" type="submit">Создать пользователя</button>
   <p class="muted" style="margin-top:10px">Уже есть аккаунт?
     <a href="{{ url_for('login') }}">Войти</a></p>
 </form>

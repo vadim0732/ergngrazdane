@@ -1,31 +1,22 @@
 <!DOCTYPE html>
 <html lang="ru">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=390" />
-  <title>Мобильный макет 390×844 — заявки</title>
-  <link rel="stylesheet" href="../static/css/style.css" />
-  <style>
-    body { background: #cfd8e0; }
-    .mobile-nav { display: flex; gap: 8px; margin-bottom: 12px; font-size: .85rem; flex-wrap: wrap; }
-  </style>
-</head>
+<head><meta charset="UTF-8"><meta name="viewport" content="width=390, initial-scale=1">
+<title>Мои заявки</title><link rel="stylesheet" href="style.css"></head>
 <body>
-  <div class="mobile-frame">
-    <div class="mobile-nav">
-      <a href="login.html">Вход</a>
-      <a href="register.html">Регистрация</a>
-      <a href="applications.html">Заявки</a>
-      <a href="new_application.html">Новая</a>
-      <a href="admin.html">Админ</a>
-    </div>
-    <h1>Мои заявки</h1>
-    <article class="app-card">
-      <header><strong>#1</strong><span class="pill">Новая</span></header>
-      <p><b>Услуга:</b> Выписка о кадастровой стоимости</p>
-      <p><b>Дата:</b> 15.09.2026</p>
-      <p class="hint">Отзыв после «Услуга оказана».</p>
-    </article>
+<div class="header">гражданам.егрн</div>
+<div class="container">
+  <h1>Мои заявки</h1>
+  <div class="card">
+    <b>№1 · Выписка об основных характеристиках</b><br>
+    Дата: 31.12.2026 · Оплата: Наличные<br>
+    <span class="status status-done">Услуга оказана</span>
+    <p style="margin:8px 0 0"><input placeholder="Ваш отзыв"> <button class="btn" style="margin-top:6px">Оставить</button></p>
   </div>
-</body>
-</html>
+  <div class="card">
+    <b>№2 · Выписка о кадастровой стоимости</b><br>
+    Дата: 15.01.2027 · Оплата: Перевод<br>
+    <span class="status status-work">В обработке</span>
+  </div>
+  <a class="link" href="new_application.html">Создать заявку</a>
+</div>
+</body></html>

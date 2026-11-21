@@ -1,32 +1,19 @@
 <!DOCTYPE html>
 <html lang="ru">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=390" />
-  <title>Мобильный макет 390×844 — регистрация</title>
-  <link rel="stylesheet" href="../static/css/style.css" />
-  <style>
-    body { background: #cfd8e0; }
-    .mobile-nav { display: flex; gap: 8px; margin-bottom: 12px; font-size: .85rem; flex-wrap: wrap; }
-  </style>
-</head>
+<head><meta charset="UTF-8"><meta name="viewport" content="width=390, initial-scale=1">
+<title>Регистрация</title><link rel="stylesheet" href="style.css"></head>
 <body>
-  <div class="mobile-frame">
-    <div class="mobile-nav">
-      <a href="login.html">Вход</a>
-      <a href="register.html">Регистрация</a>
-      <a href="applications.html">Заявки</a>
-      <a href="new_application.html">Новая</a>
-      <a href="admin.html">Админ</a>
-    </div>
-    <p class="muted">Макет 390×844</p>
-    <h1>Регистрация</h1>
-    <label>Логин<input placeholder="latin6+" /></label>
-    <label>Пароль<input type="password" /></label>
-    <label>ФИО<input placeholder="Иванов Иван" /></label>
-    <label>Телефон<input placeholder="8(999)123-45-67" /></label>
-    <label>Email<input placeholder="user@mail.ru" /></label>
-    <button class="btn" type="button">Зарегистрироваться</button>
-  </div>
-</body>
-</html>
+<div class="header">гражданам.егрн</div>
+<div class="container">
+  <h1>Регистрация</h1>
+  <form>
+    <label>Логин<input></label>
+    <label>Пароль<input type="password"></label>
+    <label>ФИО<input></label>
+    <label>Телефон<input></label>
+    <label>E-mail<input type="email"></label>
+    <button class="btn" type="button">Создать пользователя</button>
+  </form>
+  <a class="link" href="login.html">Уже есть аккаунт? Войти</a>
+</div>
+</body></html>

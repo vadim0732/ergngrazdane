@@ -1,11 +1,12 @@
 import os
+import re
 import sqlite3
 from datetime import datetime
 from functools import wraps
 
 from flask import (
     Flask, g, render_template, request, redirect,
-    url_for, session, flash, abort
+    url_for, session, flash, abort, send_from_directory
 )
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -37,12 +38,11 @@ def init_db():
         db = get_db()
         with open(SCHEMA_PATH, "r", encoding="utf-8") as f:
             db.executescript(f.read())
-        # админ по умолчанию
         db.execute(
             "INSERT INTO users (login, password_hash, full_name, phone, email, role) "
             "VALUES (?, ?, ?, ?, ?, ?)",
             ("Admin", generate_password_hash("EgrnNET"),
-             "Администратор", "+70000000000", "admin@egrn.local", "admin")
+             "Администратор", "8(900)000-00-00", "admin@egrn.local", "admin")
         )
         db.commit()
         print("БД инициализирована:", DB_PATH)
@@ -89,26 +89,39 @@ def register():
         full_name = request.form.get("full_name", "").strip()
         phone = request.form.get("phone", "").strip()
         email = request.form.get("email", "").strip()
+
         errors = []
-        if len(login) < 3: errors.append("Логин — минимум 3 символа")
-        if len(password) < 6: errors.append("Пароль — минимум 6 символов")
-        if not full_name: errors.append("Укажите ФИО")
-        if not phone: errors.append("Укажите телефон")
-        if "@" not in email: errors.append("Некорректный e-mail")
+        if not re.fullmatch(r"[A-Za-z0-9]{6,}", login):
+            errors.append("Логин: латиница и цифры, не менее 6 символов")
+        if len(password) < 8:
+            errors.append("Пароль — минимум 8 символов")
+        if not re.fullmatch(r"[А-Яа-яЁё\s]+", full_name):
+            errors.append("ФИО: только кириллица и пробелы")
+        if not re.fullmatch(r"8\(\d{3}\)\d{3}-\d{2}-\d{2}", phone):
+            errors.append("Телефон в формате 8(XXX)XXX-XX-XX")
+        if not re.fullmatch(r"[^@\s]+@[^@\s]+\.[^@\s]+", email):
+            errors.append("Некорректный e-mail")
+
         db = get_db()
-        if not errors and db.execute("SELECT 1 FROM users WHERE login = ?", (login,)).fetchone():
+        if not errors and db.execute(
+            "SELECT 1 FROM users WHERE login = ?", (login,)
+        ).fetchone():
             errors.append("Такой логин уже занят")
+
         if errors:
-            for e in errors: flash(e, "error")
+            for e in errors:
+                flash(e, "error")
             return render_template("register.html", form=request.form)
+
         db.execute(
             "INSERT INTO users (login, password_hash, full_name, phone, email) "
             "VALUES (?, ?, ?, ?, ?)",
             (login, generate_password_hash(password), full_name, phone, email)
         )
         db.commit()
-        flash("Регистрация успешна. Войдите.", "success")
+        flash("Пользователь создан. Войдите.", "success")
         return redirect(url_for("login"))
+
     return render_template("register.html", form={})
 
 @app.route("/login", methods=["GET", "POST"])
@@ -139,7 +152,8 @@ def applications():
     db = get_db()
     rows = db.execute(
         """SELECT a.*, s.name AS service_name
-           FROM applications a JOIN services s ON s.id = a.service_id
+           FROM applications a
+           JOIN services s ON s.id = a.service_id
            WHERE a.user_id = ?
            ORDER BY a.created_at DESC""",
         (session["user_id"],)
@@ -151,20 +165,28 @@ def applications():
 def new_application():
     db = get_db()
     services = db.execute("SELECT * FROM services ORDER BY id").fetchall()
+
     if request.method == "POST":
         service_id = request.form.get("service_id")
         receive_date = request.form.get("receive_date", "").strip()
         payment = request.form.get("payment")
+
         errors = []
         try:
             datetime.strptime(receive_date, "%d.%m.%Y")
         except ValueError:
             errors.append("Дата в формате ДД.ММ.ГГГГ")
-        if not service_id: errors.append("Выберите услугу")
-        if payment not in ("Наличные", "Перевод"): errors.append("Выберите оплату")
+        if not service_id:
+            errors.append("Выберите услугу")
+        if payment not in ("Наличные", "Перевод"):
+            errors.append("Выберите способ оплаты")
+
         if errors:
-            for e in errors: flash(e, "error")
-            return render_template("new_application.html", services=services, form=request.form)
+            for e in errors:
+                flash(e, "error")
+            return render_template("new_application.html",
+                                   services=services, form=request.form)
+
         db.execute(
             "INSERT INTO applications (user_id, service_id, receive_date, payment) "
             "VALUES (?, ?, ?, ?)",
@@ -173,6 +195,7 @@ def new_application():
         db.commit()
         flash("Заявка отправлена", "success")
         return redirect(url_for("applications"))
+
     return render_template("new_application.html", services=services, form={})
 
 @app.route("/applications/<int:app_id>/review", methods=["POST"])
@@ -201,7 +224,10 @@ def add_review(app_id):
 def admin():
     db = get_db()
     status = request.args.get("status", "")
-    page = max(int(request.args.get("page", 1) or 1), 1)
+    try:
+        page = max(int(request.args.get("page", 1)), 1)
+    except ValueError:
+        page = 1
     per_page = 5
     offset = (page - 1) * per_page
 
@@ -210,9 +236,13 @@ def admin():
         where = "WHERE a.status = ?"
         params.append(status)
 
-    total = db.execute(f"SELECT COUNT(*) FROM applications a {where}", params).fetchone()[0]
+    total = db.execute(
+        f"SELECT COUNT(*) FROM applications a {where}", params
+    ).fetchone()[0]
+
     rows = db.execute(
-        f"""SELECT a.*, s.name AS service_name, u.login AS user_login, u.full_name
+        f"""SELECT a.*, s.name AS service_name,
+                   u.login AS user_login, u.full_name
             FROM applications a
             JOIN services s ON s.id = a.service_id
             JOIN users u ON u.id = a.user_id
@@ -221,6 +251,7 @@ def admin():
             LIMIT ? OFFSET ?""",
         (*params, per_page, offset)
     ).fetchall()
+
     pages = (total + per_page - 1) // per_page
     return render_template("admin.html", applications=rows,
                            status=status, page=page, pages=pages)
@@ -235,7 +266,17 @@ def change_status(app_id):
     db.execute("UPDATE applications SET status = ? WHERE id = ?", (new_status, app_id))
     db.commit()
     flash("Статус обновлён", "success")
-    return redirect(url_for("admin", status=request.args.get("status", ""), page=request.args.get("page", 1)))
+    return redirect(url_for(
+        "admin",
+        status=request.args.get("status", ""),
+        page=request.args.get("page", 1)
+    ))
+
+# ---------- мобильные страницы ----------
+@app.route("/mobile/<path:filename>")
+def mobile_files(filename):
+    mobile_dir = os.path.join(BASE_DIR, "mobile")
+    return send_from_directory(mobile_dir, filename)
 
 # ---------- CLI ----------
 @app.cli.command("init-db")

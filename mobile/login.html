@@ -1,31 +1,16 @@
 <!DOCTYPE html>
 <html lang="ru">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=390" />
-  <title>Мобильный макет 390×844 — вход</title>
-  <link rel="stylesheet" href="../static/css/style.css" />
-  <style>
-    body { background: #cfd8e0; }
-    .mobile-frame h1 { font-size: 1.3rem; }
-    .mobile-nav { display: flex; gap: 8px; margin-bottom: 12px; font-size: .85rem; flex-wrap: wrap; }
-  </style>
-</head>
+<head><meta charset="UTF-8"><meta name="viewport" content="width=390, initial-scale=1">
+<title>Вход</title><link rel="stylesheet" href="style.css"></head>
 <body>
-  <div class="mobile-frame">
-    <div class="mobile-nav">
-      <a href="login.html">Вход</a>
-      <a href="register.html">Регистрация</a>
-      <a href="applications.html">Заявки</a>
-      <a href="new_application.html">Новая</a>
-      <a href="admin.html">Админ</a>
-    </div>
-    <p class="muted">Макет смартфона 390×844 · гражданам.егрн</p>
-    <h1>Авторизация</h1>
-    <label>Логин<input placeholder="логин" /></label>
-    <label>Пароль<input type="password" placeholder="пароль" /></label>
+<div class="header">гражданам.егрн</div>
+<div class="container">
+  <h1>Авторизация</h1>
+  <form>
+    <label>Логин<input></label>
+    <label>Пароль<input type="password"></label>
     <button class="btn" type="button">Войти</button>
-    <p class="switch-link">Еще не зарегистрированы? Регистрация</p>
-  </div>
-</body>
-</html>
+  </form>
+  <a class="link" href="register.html">Еще не зарегистрированы? Регистрация</a>
+</div>
+</body></html>
