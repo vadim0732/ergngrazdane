@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block title %}Админ-панель — гражданам.егрн{% endblock %}
+{% block content %}
+<section>
+  <div class="page-head">
+    <h1>Панель администратора</h1>
+    <p class="muted">Всего заявок: {{ total }}</p>
+  </div>
+
+  <form class="filters" method="get">
+    <label>Фильтр по статусу
+      <select name="status" onchange="this.form.submit()">
+        <option value="">Все</option>
+        {% for s in statuses %}
+          <option value="{{ s }}" {% if status_filter == s %}selected{% endif %}>{{ s }}</option>
+        {% endfor %}
+      </select>
+    </label>
+  </form>
+
+  {% if not applications %}
+    <div class="empty">Заявок нет.</div>
+  {% else %}
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Пользователь</th>
+            <th>Услуга</th>
+            <th>Дата</th>
+            <th>Оплата</th>
+            <th>Статус</th>
+            <th>Действие</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for a in applications %}
+            <tr>
+              <td>{{ a.id }}</td>
+              <td>
+                {{ a.full_name }}<br />
+                <span class="muted">{{ a.login }} · {{ a.phone }}</span>
+              </td>
+              <td>{{ a.service_name }}</td>
+              <td>{{ a.request_date|dmy }}</td>
+              <td>{{ a.payment_method|pay }}</td>
+              <td><span class="pill">{{ a.status }}</span></td>
+              <td>
+                <form method="post" action="{{ url_for('update_status', app_id=a.id) }}" class="inline-form">
+                  <input type="hidden" name="return_status" value="{{ status_filter }}" />
+                  <input type="hidden" name="return_page" value="{{ page }}" />
+                  <select name="status">
+                    {% for s in statuses %}
+                      <option value="{{ s }}" {% if a.status == s %}selected{% endif %}>{{ s }}</option>
+                    {% endfor %}
+                  </select>
+                  <button class="btn btn-sm" type="submit">Сохранить</button>
+                </form>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="pagination">
+      {% if page > 1 %}
+        <a href="{{ url_for('admin_panel', status=status_filter, page=page-1) }}">← Назад</a>
+      {% endif %}
+      <span>Стр. {{ page }} / {{ pages }}</span>
+      {% if page < pages %}
+        <a href="{{ url_for('admin_panel', status=status_filter, page=page+1) }}">Вперёд →</a>
+      {% endif %}
+    </div>
+  {% endif %}
+</section>
+{% endblock %}

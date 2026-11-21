@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=390" />
+  <title>Мобильный макет 390×844 — новая заявка</title>
+  <link rel="stylesheet" href="../static/css/style.css" />
+  <style>
+    body { background: #cfd8e0; }
+    .mobile-nav { display: flex; gap: 8px; margin-bottom: 12px; font-size: .85rem; flex-wrap: wrap; }
+  </style>
+</head>
+<body>
+  <div class="mobile-frame">
+    <div class="mobile-nav">
+      <a href="login.html">Вход</a>
+      <a href="register.html">Регистрация</a>
+      <a href="applications.html">Заявки</a>
+      <a href="new_application.html">Новая</a>
+      <a href="admin.html">Админ</a>
+    </div>
+    <h1>Формирование заявки</h1>
+    <label>Вид услуги
+      <select>
+        <option>Выписка об основных характеристиках и правах</option>
+        <option>Выписка о кадастровой стоимости</option>
+        <option>Выписка о переходе прав на объект</option>
+      </select>
+    </label>
+    <label>Желаемая дата (ДД.ММ.ГГГГ)<input placeholder="15.09.2026" /></label>
+    <fieldset class="pay-fieldset">
+      <legend>Оплата</legend>
+      <label class="radio"><input type="radio" checked /> Наличными</label>
+      <label class="radio"><input type="radio" /> Переводом по номеру телефона</label>
+    </fieldset>
+    <button class="btn" type="button">Отправить</button>
+  </div>
+</body>
+</html>

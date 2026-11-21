@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 420" role="img" aria-label="ER гражданам.егрн">
+  <style>
+    .box { fill:#f7fbf8; stroke:#0f4c81; stroke-width:2; }
+    .title { font:700 14px Segoe UI,sans-serif; fill:#0b3a5c; }
+    .field { font:12px Consolas,monospace; fill:#12241c; }
+    .pk { fill:#2e8b57; }
+    .fk { fill:#0f4c81; }
+    .note { font:12px Segoe UI,sans-serif; fill:#5a6e64; }
+    .line { stroke:#0f4c81; stroke-width:2; fill:none; }
+  </style>
+  <text x="20" y="28" class="title">ER (минимум по КОД М1/М2) — портал гражданам.егрн</text>
+  <text x="20" y="48" class="note">На экзамене диаграмму строят средствами СУБД из schema.sql. Здесь — иллюстрация связей.</text>
+
+  <rect class="box" x="40" y="80" width="240" height="200" rx="10"/>
+  <text x="56" y="108" class="title">users</text>
+  <text x="56" y="132" class="field pk">PK id</text>
+  <text x="56" y="152" class="field">login UNIQUE</text>
+  <text x="56" y="172" class="field">password_hash</text>
+  <text x="56" y="192" class="field">full_name, phone, email</text>
+  <text x="56" y="212" class="field">role: user|admin</text>
+
+  <rect class="box" x="340" y="80" width="260" height="200" rx="10"/>
+  <text x="356" y="108" class="title">applications</text>
+  <text x="356" y="132" class="field pk">PK id</text>
+  <text x="356" y="152" class="field fk">FK user_id → users.id</text>
+  <text x="356" y="172" class="field">service_name</text>
+  <text x="356" y="192" class="field">request_date</text>
+  <text x="356" y="212" class="field">payment_method</text>
+  <text x="356" y="232" class="field">status / review_text</text>
+  <text x="356" y="252" class="field">created_at</text>
+
+  <rect class="box" x="660" y="80" width="220" height="140" rx="10"/>
+  <text x="676" y="108" class="title">services</text>
+  <text x="676" y="132" class="field pk">PK id</text>
+  <text x="676" y="152" class="field">title UNIQUE</text>
+  <text x="676" y="172" class="field">is_active</text>
+
+  <path class="line" d="M280 160 H340"/>
+  <text x="285" y="150" class="note">1:N</text>
+  <path class="line" d="M600 160 H660" stroke-dasharray="4 3"/>
+  <text x="605" y="150" class="note">справочник М2</text>
+
+  <text x="40" y="330" class="note">Статусы (маппинг PDF): Новая → В обработке → Услуга оказана</text>
+  <text x="40" y="352" class="note">(PDF «Корочки.есть»: Новая → Идет обучение → Обучение завершено)</text>
+  <text x="40" y="374" class="note">Отзыв разрешён только при финальном статусе (требование М2).</text>
+  <text x="40" y="396" class="note">Админ в PDF: Admin / KorokNET → в демо: Admin / EgrnNET</text>
+</svg>

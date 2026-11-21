@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}Мои заявки{% endblock %}
+{% block content %}
+<h1>Мои заявки</h1>
+
+{% if not applications %}
+  <p class="muted">Пока нет заявок.
+    <a href="{{ url_for('new_application') }}">Создать заявку</a>
+  </p>
+{% else %}
+<table class="table">
+  <thead>
+    <tr>
+      <th>№</th>
+      <th>Услуга</th>
+      <th>Дата получения</th>
+      <th>Оплата</th>
+      <th>Статус</th>
+      <th>Отзыв</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for a in applications %}
+    <tr>
+      <td data-label="№">{{ a.id }}</td>
+      <td data-label="Услуга">{{ a.service_name }}</td>
+      <td data-label="Дата">{{ a.receive_date }}</td>
+      <td data-label="Оплата">{{ a.payment }}</td>
+      <td data-label="Статус">
+        <span class="status status-{{ a.status }}">{{ a.status }}</span>
+      </td>
+      <td data-label="Отзыв">
+        {% if a.status == 'Услуга оказана' %}
+          {% if a.review %}
+            <span class="muted">«{{ a.review }}»</span>
+          {% else %}
+            <form method="post"
+                  action="{{ url_for('add_review', app_id=a.id) }}"
+                  class="inline">
+              <input name="review" placeholder="Ваш отзыв" required>
+              <button class="btn btn-sm" type="submit">Оставить</button>
+            </form>
+          {% endif %}
+        {% else %}
+          <span class="muted">После оказания услуги</span>
+        {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endif %}
+{% endblock %}

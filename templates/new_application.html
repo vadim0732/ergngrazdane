@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Новая заявка{% endblock %}
+{% block content %}
+<form method="post" class="form">
+  <h1>Новая заявка</h1>
+
+  <label>Услуга
+    <select name="service_id" required>
+      {% for s in services %}
+        <option value="{{ s.id }}"
+          {% if form.service_id == s.id|string %}selected{% endif %}>
+          {{ s.name }}
+        </option>
+      {% endfor %}
+    </select>
+  </label>
+
+  <label>Дата получения (ДД.ММ.ГГГГ)
+    <input name="receive_date"
+           placeholder="31.12.2026"
+           pattern="\d{2}\.\d{2}\.\d{4}"
+           title="Формат: ДД.ММ.ГГГГ"
+           required
+           value="{{ form.receive_date or '' }}">
+  </label>
+
+  <label>Оплата
+    <select name="payment" required>
+      <option value="Наличные"
+        {% if form.payment == 'Наличные' %}selected{% endif %}>Наличные</option>
+      <option value="Перевод"
+        {% if form.payment == 'Перевод' %}selected{% endif %}>Перевод</option>
+    </select>
+  </label>
+
+  <button class="btn" type="submit">Отправить</button>
+</form>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Вход — гражданам.егрн{% endblock %}
+{% block content %}
+<section class="hero-block">
+  <div class="slider" id="slider" aria-label="Слайдер">
+    <div class="slides">
+      {# Кадры из приложения КОД 09.02.07-3-2026 (Прил_ОЗ М2), оптимизированные #}
+      <img class="slide active" src="{{ url_for('static', filename='media/kod_slide1.jpg') }}" alt="Слайд 1" />
+      <img class="slide" src="{{ url_for('static', filename='media/kod_slide2.jpg') }}" alt="Слайд 2" />
+      <img class="slide" src="{{ url_for('static', filename='media/kod_slide3.jpg') }}" alt="Слайд 3" />
+      <img class="slide" src="{{ url_for('static', filename='media/kod_slide4.jpg') }}" alt="Слайд 4" />
+    </div>
+    <button type="button" class="slider-btn prev" data-dir="-1" aria-label="Назад">‹</button>
+    <button type="button" class="slider-btn next" data-dir="1" aria-label="Вперёд">›</button>
+    <div class="dots" id="dots"></div>
+  </div>
+  <div class="auth-card">
+    <h1>Авторизация</h1>
+    <p class="muted">Войдите, чтобы заказать сведения из ЕГРН</p>
+    {% if error %}
+      <div class="field-error show">{{ error }}</div>
+    {% endif %}
+    <form method="post" novalidate>
+      <label>Логин
+        <input name="login" value="{{ login_value }}" required autocomplete="username" />
+      </label>
+      <label>Пароль
+        <input type="password" name="password" required autocomplete="current-password" />
+      </label>
+      <button class="btn" type="submit">Войти</button>
+    </form>
+    <p class="switch-link">
+      <a href="{{ url_for('register') }}">Еще не зарегистрированы? Регистрация</a>
+    </p>
+  </div>
+</section>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/slider.js') }}"></script>
+{% endblock %}
